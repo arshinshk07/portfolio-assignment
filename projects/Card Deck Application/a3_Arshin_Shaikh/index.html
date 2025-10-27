@@ -1,0 +1,164 @@
+<!--
+StAuth10244: I, Arshin Shaikh, 000913198, certify that this material is my original work.
+No other person's work has been used without due acknowledgement.
+I have not made my work available to anyone else.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A3 - Card Game</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- React and ReactDOM -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React App Code -->
+  <script type="text/babel">
+    // ------------------- Card Component -------------------
+    function Card({ suit, value, isPicked, onClick }) {
+      return (
+        <div className={`card ${isPicked ? "picked" : ""}`} onClick={onClick}>
+          <span className="card-value">{value}</span>
+          <span className="card-suit">{suit}</span>
+        </div>
+      );
+    }
+
+    // ------------------- Deck Data -------------------
+    const SUITS = ["♥", "♦", "♣", "♠"];
+    const VALUES = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+
+    function createDeck() {
+      const deck = [];
+      for (let suit of SUITS) {
+        for (let value of VALUES) deck.push({ suit, value });
+      }
+      return deck;
+    }
+
+    // ------------------- App Component -------------------
+    function App() {
+      const [deck, setDeck] = React.useState(createDeck());
+      const [selectedCards, setSelectedCards] = React.useState([]);
+      const [pickedIndex, setPickedIndex] = React.useState(null);
+
+      // Draw a single random card
+      function handleDrawCard() {
+        if (deck.length === 0) return;
+
+        const randomIndex = Math.floor(Math.random() * deck.length);
+        const card = deck[randomIndex];
+        const newDeck = [...deck];
+        newDeck.splice(randomIndex, 1);
+
+        setDeck(newDeck);
+        setSelectedCards([...selectedCards, card]);
+      }
+
+      // Pick or swap cards
+      function handleCardClick(index) {
+        if (pickedIndex === null) setPickedIndex(index);
+        else if (pickedIndex === index) setPickedIndex(null);
+        else {
+          const newSelected = [...selectedCards];
+          [newSelected[pickedIndex], newSelected[index]] = [newSelected[index], newSelected[pickedIndex]];
+          setSelectedCards(newSelected);
+          setPickedIndex(null);
+        }
+      }
+
+      // Deal 5 or 7 cards
+      function handleDeal(count) {
+        const resetDeck = [...deck, ...selectedCards];
+        const newSelected = [];
+
+        for (let i = 0; i < count && resetDeck.length > 0; i++) {
+          const randomIndex = Math.floor(Math.random() * resetDeck.length);
+          newSelected.push(resetDeck[randomIndex]);
+          resetDeck.splice(randomIndex, 1);
+        }
+
+        setDeck(resetDeck);
+        setSelectedCards(newSelected);
+        setPickedIndex(null);
+      }
+
+      // Reset everything
+      function handleReset() {
+        setDeck(createDeck());
+        setSelectedCards([]);
+        setPickedIndex(null);
+      }
+
+      // Toss picked card
+      function handleToss() {
+        if (pickedIndex === null) return;
+        const newSelected = [...selectedCards];
+        newSelected.splice(pickedIndex, 1);
+        setSelectedCards(newSelected);
+        setPickedIndex(null);
+      }
+
+      // Regroup/shuffle selected cards
+      function handleRegroup() {
+        const shuffled = [...selectedCards];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        setSelectedCards(shuffled);
+        setPickedIndex(null);
+      }
+
+      // Add a wildcard card
+      function handleWildcard() {
+        const suit = SUITS[Math.floor(Math.random() * SUITS.length)];
+        const value = VALUES[Math.floor(Math.random() * VALUES.length)];
+        setSelectedCards([...selectedCards, { suit, value }]);
+      }
+
+      return (
+        <div>
+          <h1>Card Game Assignment</h1>
+
+          <div className="deck" onClick={handleDrawCard}>
+            {deck.length > 0 ? "" : "No cards remaining"}
+          </div>
+
+          <div className="controls">
+            <button onClick={() => handleDeal(5)}>Deal 5</button>
+            <button onClick={() => handleDeal(7)}>Deal 7</button>
+            <button onClick={handleReset}>Reset</button>
+            <button onClick={handleToss}>Toss</button>
+            <button onClick={handleRegroup}>Regroup</button>
+            <button onClick={handleWildcard}>Wildcard</button>
+          </div>
+
+          <div className="card-container">
+            {selectedCards.map((card, index) => (
+              <Card
+                key={index}
+                suit={card.suit}
+                value={card.value}
+                isPicked={pickedIndex === index}
+                onClick={() => handleCardClick(index)}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>

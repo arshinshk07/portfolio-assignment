@@ -1,0 +1,129 @@
+#map {
+  height: 80vh;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background-color: #4caf50;
+  color: white;
+  padding: 1rem 0;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+body {
+  background: whitesmoke;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.btn {
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #fe8989;
+  color: white;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.navbar {
+  background-color: #66a6ff;
+}
+
+.navbar-brand {
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  #map {
+    height: 60vh;
+  }
+}
+
+@media (max-width: 375px) {
+  #map {
+    height: 50vh;
+  }
+  .card {
+    padding: 0.5rem;
+  }
+}
+.main-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-between;
+}
+
+.sidebar {
+  flex: 1 1 25%;
+  background: linear-gradient(135deg, #f9f9f9, #e6e6e6);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.content {
+  flex: 1 1 70%;
+  background: linear-gradient(135deg, #ffffff, #f7f7f7);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sidebar {
+    flex: 1 1 100%;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
+  }
+
+  .content {
+    flex: 1 1 100%;
+    background: linear-gradient(135deg, #ffffff, #ededed);
+  }
+}
